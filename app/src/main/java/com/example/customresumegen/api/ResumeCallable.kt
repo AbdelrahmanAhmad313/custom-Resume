@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface ResumeCallable {
     @GET("resume?name=insert-your-name-here")
-    fun getResume():Call<Results>
+    fun getResume():Call<Resume>
 }

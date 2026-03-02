@@ -3,7 +3,7 @@ package com.example.customresumegen.api
 
 data class Results(
         val results:ArrayList<Resume>
-        )
+)
 
 
 data class Resume(
@@ -13,7 +13,7 @@ data class Resume(
         val phone:String,
         val projects:ArrayList<ProjectDetails>,
     val skills:List<String>,
-    val summery:String,
+    val summary:String,
     val twitter:String,
         )
 

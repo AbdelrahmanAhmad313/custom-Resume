@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.customresumegen.api.Resume
+import com.example.customresumegen.api.getDetails
 import com.example.customresumegen.ui.theme.CustomresumegenTheme
 
 class MainActivity : ComponentActivity() {
@@ -54,8 +57,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CustomizeResume(modifier: Modifier = Modifier) {
-    val resumeDetails by remember { mutableStateOf<Resume?>(null) }
-
+    var resumeDetails by remember { mutableStateOf<Resume?>(null) }
+   getDetails {results-> resumeDetails =results }
     Column (
         modifier = Modifier
         .fillMaxSize()
@@ -69,17 +72,17 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
-//                .padding(24.dp)
-//                .padding(top = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp)
+                    .height(550.dp)
                     .shadow(12.dp, RoundedCornerShape(12.dp))
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color.Red)
+                    .background(Color.White, RoundedCornerShape(12.dp))
+                    .padding(8.dp)
+                    .verticalScroll(rememberScrollState())
+
             ) {
                 Text(
                     modifier = Modifier.padding(16.dp),
@@ -93,7 +96,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append(resumeDetails?.address)
+                             append(resumeDetails?.address)
                         }
 
                     })
@@ -110,7 +113,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append("His email")
+                            append(resumeDetails?.email)
                         }
 
                     })
@@ -127,7 +130,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append("His Name")
+                            append(resumeDetails?.name)
                         }
 
                     })
@@ -143,7 +146,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append("His Phone")
+                            append(resumeDetails?.phone)
                         }
 
                     })
@@ -159,7 +162,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append("His Projects")
+                            append("Not Yet")
                         }
 
                     })
@@ -175,7 +178,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append("His Skills")
+                            append("Not Yet")
                         }
 
                     })
@@ -191,7 +194,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append("His Summery")
+                            append(resumeDetails?.summary)
                         }
 
                     })
@@ -207,7 +210,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         withStyle(
                             style = SpanStyle(fontSize = 16.sp)
                         ) {
-                            append("His Twitter")
+                            append(resumeDetails?.twitter)
                         }
 
                     })

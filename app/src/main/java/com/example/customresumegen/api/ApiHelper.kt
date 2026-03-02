@@ -1,6 +1,7 @@
 package com.example.customresumegen.api
 
 import android.provider.ContactsContract.CommonDataKinds.Callable
+import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,16 +15,15 @@ private val resumeRetrofit = Retrofit.Builder()
 private val resumeCallable = resumeRetrofit.create(ResumeCallable::class.java)
 
 
-fun getDetails(resume: (List<Resume>) -> Unit){
-resumeCallable.getResume().enqueue(object :Callback<Results>{
-    override fun onResponse(call: Call<Results>, response: Response<Results>) {
-        val data =response.body()
-        val results =data?.results!!
-        resume(results)
-    }
+fun getDetails(resume: (Resume) -> Unit){
+resumeCallable.getResume().enqueue(object :Callback<Resume>{
+    override fun onResponse(call: Call<Resume>, response: Response<Resume>) {
+            val data = response.body()
+            resume(data!!)
+        }
 
-    override fun onFailure(call: Call<Results>, t: Throwable) {
-
+    override fun onFailure(call: Call<Resume>, t: Throwable) {
+        Log.d("error","there is a failure")
     }
 
 })
