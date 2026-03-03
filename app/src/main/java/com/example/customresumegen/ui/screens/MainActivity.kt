@@ -20,11 +20,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -62,12 +65,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomizeResume(modifier: Modifier = Modifier) {
     var resumeDetails by remember { mutableStateOf<Resume?>(null) }
     var isLoading by remember { mutableStateOf(true) }
-    var index by remember { mutableStateOf(0) }
-    LaunchedEffect(Unit) {  // Unit = runs once
+    var bgColorIndex by remember { mutableStateOf(0) }
+    val bgColor= listOf(Color.White,Color.Black,Color.Red,Color.Blue,Color.Yellow,Color.Green)
+    val showSheet = remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    LaunchedEffect(Unit) {
         getDetails { result ->
             resumeDetails = result
             isLoading = false
@@ -100,7 +107,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
                         .fillMaxWidth()
                         .height(550.dp)
                         .shadow(12.dp, RoundedCornerShape(12.dp))
-                        .background(Color.White, RoundedCornerShape(12.dp))
+                        .background(bgColor[bgColorIndex], RoundedCornerShape(12.dp))
                         .padding(8.dp)
 
                 ) {
@@ -232,11 +239,26 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
 
                         })
                 }}
+                if (showSheet.value) {
+                    KvColorPickerBottomSheet(
+                        showSheet = showSheet,
+                        sheetState = sheetState,
+                        onColorSelected = { selectedColor ->
+                            // Do anything when you have selected color
+                        }
+                    )
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Button(onClick = { ChangeBgColor(index) }) { Text("Bg color") }
+                    Button(onClick = { sheetState.value = true },
+                        colors = ButtonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White,
+                        disabledContainerColor = Color.Gray,
+                        disabledContentColor = Color.Gray
+                    )) { Text("Bg color") }
                     Button(onClick = {}) { Text("Font Color") }
                     Button(onClick = {}) { Text("Font Size") }
                 }
@@ -244,12 +266,7 @@ fun CustomizeResume(modifier: Modifier = Modifier) {
         }
     }
 }
-fun ChangeBgColor(index:Int):Color{
-    val bgColor= listOf(Color.White,Color.Black,Color.Red,Color.Blue,Color.Yellow,Color.Green)
-    var co =index
-    co++
-    return bgColor[co]
-}
+
 fun ChangeFontColor(){}
 fun ChangeFontSize(){}
 @Preview(device = "spec:width=411dp,height=891dp", showSystemUi = true, showBackground = true)
