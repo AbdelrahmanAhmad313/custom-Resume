@@ -58,6 +58,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("com.github.KvColorPalette:KvColorPicker-Android:2.1")
+    implementation("com.github.KvColorPalette:KvColorPicker-Android:2.2.0")
 
 }
